@@ -8,7 +8,7 @@ const MyProfile = () => {
     image: assets.profile_pic,
     email: 'dummyemail@hotmail.com',
     phone: '+31 6 87654321',
-    adress: {
+    address: {
       line1: "gfdgdgdg",
       line2: "gdfgdgdg"
     },
@@ -33,7 +33,7 @@ const MyProfile = () => {
       <div>
         <p className='text-neutral-500 underline mt-3'>CONTACT INFORMATION</p>
         <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700'>
-          <p className='font-medium'>Email id:</p>
+          <p className='font-medium'>Email:</p>
           <p className='text-blue-500'>{userData.email}</p>
           <p className='font-medium'>Phone:</p>
           {
@@ -41,18 +41,18 @@ const MyProfile = () => {
               ? <input className='bg-gray-100 max-w-52' type="text" value={userData.phone} onChange={(e) => setUserData(prev => ({ ...prev, phone: e.target.value }))} />
               : <p className='text-blue-400'>{userData.phone}</p>
           }
-          <p className='font-medium'>Adress:</p>
+          <p className='font-medium'>Address:</p>
           {
             isEdit
               ? <p>
-                <input className='bg-gray-50' type="text" value={userData.adress.line1} onChange={(e) => setUserData(prev => ({ ...prev, adress: { ...prev.adress, line1: e.target.value } }))} />
+                <input className='bg-gray-50' type="text" value={userData.address.line1} onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} />
                 <br />
-                <input className='bg-gray-50' type="text" value={userData.adress.line2} onChange={(e) => setUserData(prev => ({ ...prev, adress: { ...prev.adress, line2: e.target.value } }))} />
+                <input className='bg-gray-50' type="text" value={userData.address.line2} onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} />
               </p>
               : <p className='text-gray-500'>
-                {userData.adress.line1}
+                {userData.address.line1}
                 <br />
-                {userData.adress.line2}
+                {userData.address.line2}
               </p>
           }
         </div>
