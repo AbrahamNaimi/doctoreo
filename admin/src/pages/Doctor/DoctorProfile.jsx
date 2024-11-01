@@ -13,6 +13,9 @@ const DoctorProfile = () => {
 
   const updateProfile = async () => {
     try {
+      if (Number(profileData.fees) < 0) {
+        return toast.error("Fee cannot be negative");
+      }
 
       const updateData = {
         address: profileData.address,

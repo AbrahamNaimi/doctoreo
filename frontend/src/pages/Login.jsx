@@ -16,29 +16,30 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
-
+  
     try {
+      const normalizedEmail = email.toLowerCase() // Convert email to lowercase
       if (state === 'Sign Up') {
-        const {data} = await axios.post(backendUrl + '/api/user/register', {name, password, email})
-        if(data.success){
+        const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email: normalizedEmail })
+        if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
-        } else{
+        } else {
           toast.error(data.message)
         }
-      } else{
-        const {data} = await axios.post(backendUrl + '/api/user/login', { password, email})
-        if(data.success){
+      } else {
+        const { data } = await axios.post(backendUrl + '/api/user/login', { password, email: normalizedEmail })
+        if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
-        } else{
+        } else {
           toast.error(data.message)
         }
       }
     } catch (error) {
       toast.error(error.message)
     }
-  }
+  }  
 
   useEffect(()=>{
     if(token){

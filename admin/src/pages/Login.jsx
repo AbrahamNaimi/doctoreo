@@ -15,37 +15,31 @@ const Login = () => {
     const { setAToken, backendUrl } = useContext(AdminContext)
     const {setDToken} = useContext(DoctorContext)
 
-    const onSubmitHandler = async (event) =>{
-
-        event.preventDefault()
-
+    const onSubmitHandler = async (event) => {
+        event.preventDefault();
+    
         try {
-
+            const lowercasedEmail = email.toLowerCase();  // Convert email to lowercase
+    
             if (state === 'Admin') {
-
-                const {data} = await axios.post(backendUrl + '/api/admin/login', {email, password})
+                const {data} = await axios.post(backendUrl + '/api/admin/login', { email: lowercasedEmail, password });
                 if (data.success) {
-                    localStorage.setItem('aToken', data.token)
-                    setAToken(data.token)  
-                } else{
-                    toast.error(data.message)
+                    localStorage.setItem('aToken', data.token);
+                    setAToken(data.token);
+                } else {
+                    toast.error(data.message);
                 }
-
-            } else{
-
-                const {data} = await axios.post(backendUrl + '/api/doctor/login', {email, password})
+            } else {
+                const {data} = await axios.post(backendUrl + '/api/doctor/login', { email: lowercasedEmail, password });
                 if (data.success) {
-                    localStorage.setItem('dToken', data.token)
-                    setDToken(data.token) 
-                    console.log(data.token)
-                     
-                } else{
-                    toast.error(data.message)
+                    localStorage.setItem('dToken', data.token);
+                    setDToken(data.token);
+                } else {
+                    toast.error(data.message);
                 }
             }
-            
         } catch (error) {
-            
+            console.error(error);
         }
     }
 
