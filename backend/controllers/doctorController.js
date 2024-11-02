@@ -33,26 +33,28 @@ const doctorList = async (req, res) => {
 // API for doctor login
 const loginDoctor = async (req, res) => {
     try {
-        const { email, password } = req.body
-        const doctor = await doctorModel.findOne({ email })
+        const email = req.body.email.toLowerCase(); // Convert email to lowercase
+        const { password } = req.body;
+        const doctor = await doctorModel.findOne({ email });
 
         if (!doctor) {
-            return res.json({ success: false, message: 'Invalid credentials' })
+            return res.json({ success: false, message: 'Invalid credentials' });
         }
 
-        const isMatch = await bcrypt.compare(password, doctor.password)
+        const isMatch = await bcrypt.compare(password, doctor.password);
 
         if (isMatch) {
-            const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET)
-            res.json({ success: true, token })
+            const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET);
+            res.json({ success: true, token });
         } else {
-            return res.json({ success: false, message: 'Invalid credentials' })
+            return res.json({ success: false, message: 'Invalid credentials' });
         }
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-}
+};
+
 
 // API to get doctor appointments for doctor panel
 const appointmentsDoctor = async (req, res) => {
@@ -155,6 +157,11 @@ const doctorProfile = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
     try {
         const { docId, fees, address, available } = req.body
+
+        // validating fee number above 0
+        if (Number(fees) < 0) {
+            return res.json({ success: false, message: "Fee cannot be negative" });
+        }
 
         await doctorModel.findByIdAndUpdate(docId, { fees, address, available })
 

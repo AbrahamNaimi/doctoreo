@@ -20,53 +20,52 @@ const AddDoctor = () => {
 
   const {backendUrl, aToken} = useContext(AdminContext)
 
-  const onSubmitHandler = async (event) =>{
-    event.preventDefault()
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
 
     try {
-      if (!docImg) {
-        return toast.error('Image Not Selected')
-      }
+        if (Number(fees) < 0) {
+            return toast.error("Fee cannot be negative");
+        }
+        
+        if (!docImg) {
+            return toast.error('Image Not Selected');
+        }
 
-      const formData = new FormData()
-      formData.append('image', docImg)
-      formData.append('name', name)
-      formData.append('email', email)
-      formData.append('password', password)
-      formData.append('experience', experience)
-      formData.append('fees', Number(fees))
-      formData.append('about', about)
-      formData.append('speciality', speciality)
-      formData.append('degree', degree)
-      formData.append('address', JSON.stringify({line1:address1, line2:address2}))
+        const lowercasedEmail = email.toLowerCase();  // Convert email to lowercase
 
-      // console log formdata
-      formData.forEach((value,key)=>{
-        console.log(`${key} : ${value}`)
-      })
+        const formData = new FormData();
+        formData.append('image', docImg);
+        formData.append('name', name);
+        formData.append('email', lowercasedEmail);  // Use lowercased email
+        formData.append('password', password);
+        formData.append('experience', experience);
+        formData.append('fees', Number(fees));
+        formData.append('about', about);
+        formData.append('speciality', speciality);
+        formData.append('degree', degree);
+        formData.append('address', JSON.stringify({ line1: address1, line2: address2 }));
 
-      const {data} = await axios.post(backendUrl + '/api/admin/add-doctor', formData, {headers:{aToken}})
-      if (data.success) {
-        toast.success(data.message)
-        setDocImg(false)
-        setName('')
-        setPassword('')
-        setEmail('')
-        setAddress1('')
-        setAddress2('')
-        setDegree('')
-        setAbout('')
-        setFees('')
-      } else{
-        toast.error(data.message)
-      }
-
+        const { data } = await axios.post(backendUrl + '/api/admin/add-doctor', formData, { headers: { aToken } });
+        if (data.success) {
+            toast.success(data.message);
+            setDocImg(false);
+            setName('');
+            setPassword('');
+            setEmail('');
+            setAddress1('');
+            setAddress2('');
+            setDegree('');
+            setAbout('');
+            setFees('');
+        } else {
+            toast.error(data.message);
+        }
     } catch (error) {
-      toast.error(error.message)
-      console.log(error)
+        console.error(error);
+        toast.error(error.message);
     }
-
-  }
+}
 
 
 

@@ -13,6 +13,9 @@ const DoctorProfile = () => {
 
   const updateProfile = async () => {
     try {
+      if (Number(profileData.fees) < 0) {
+        return toast.error("Fee cannot be negative");
+      }
 
       const updateData = {
         address: profileData.address,
@@ -66,9 +69,9 @@ const DoctorProfile = () => {
             Appointment fee: <span className='text-gray-800'>{currency} {isEdit ? <input type="number" className='bg-gray-200' onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} value={profileData.fees} /> : profileData.fees}</span>
           </p>
 
-          <div className='flex gap-2 py-2'>
+          <div className='text-gray-600 font-medium flex gap-2 py-2'>
             <p>Address:</p>
-            <p className='text-sm'>
+            <p className='text-gray-600 font-medium'>
               {isEdit ? <input className='bg-gray-200' type="text" onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={profileData.address.line1} /> : profileData.address.line1}
               <br />
               {isEdit ? <input className='bg-gray-200' type="text" onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={profileData.address.line2} /> : profileData.address.line2}
